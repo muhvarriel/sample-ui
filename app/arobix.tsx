@@ -8,7 +8,7 @@ const ArobixHeroPage: NextPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [cartItemsCount, setCartItemsCount] = useState(3);
+  const [cartItemsCount] = useState(3);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
 
   // Use Framer Motion's built-in easing array for "easeInOut"
@@ -655,7 +655,7 @@ const ArobixHeroPage: NextPage = () => {
                     </svg>
                   ))}
                 </div>
-                <p className="text-[#6B7280] italic">"{testimonial.review}"</p>
+                <p className="text-[#6B7280] italic">&quot;{testimonial.review}&quot;</p>
               </motion.div>
             ))}
           </motion.div>
