@@ -8,6 +8,7 @@ const ArobixHeroPage: NextPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [cartItemsCount] = useState(3);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
 
@@ -106,29 +107,34 @@ const ArobixHeroPage: NextPage = () => {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white shadow-xl py-4' : 'bg-white/95 backdrop-blur-md py-6'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-white shadow-xl py-3 md:py-4' : 'bg-white/95 backdrop-blur-md py-4 md:py-6'
           }`}>
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-12">
+            <div className="flex items-center">
               <motion.h1
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-3xl font-bold text-[#1F2937] tracking-tight hover:text-[#6366F1] transition-colors duration-300 cursor-pointer">
+                className="text-2xl sm:text-3xl font-bold text-[#1F2937] tracking-tight hover:text-[#6366F1] transition-colors duration-300 cursor-pointer">
                 AROBIX
               </motion.h1>
 
               {/* Desktop Menu */}
-              <motion.nav variants={staggerContainer} initial="initial" animate="animate" className="hidden lg:flex items-center space-x-8">
+              <motion.nav
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+                className="hidden lg:flex items-center space-x-6 xl:space-x-8 ml-8 xl:ml-12"
+              >
                 {categories.map((category) => (
                   <motion.button
                     key={category}
                     variants={itemFadeInUp}
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setActiveCategory(category)}
+                    onClick={() => { setActiveCategory(category); setIsMobileMenuOpen(false); }}
                     className={`capitalize font-medium transition-all duration-300 hover:text-[#6366F1] relative ${activeCategory === category
                       ? 'text-[#6366F1]'
                       : 'text-[#6B7280]'
@@ -151,72 +157,121 @@ const ArobixHeroPage: NextPage = () => {
             </div>
 
             {/* Right Actions */}
-            <motion.div variants={staggerContainer} initial="initial" animate="animate" className="flex items-center space-x-6">
-              {/* Search */}
-              <motion.div variants={itemFadeInUp} className="relative">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300"
-                >
+            <motion.div variants={staggerContainer} initial="initial" animate="animate" className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+              {/* Desktop Actions */}
+              <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+                {/* Search */}
+                <motion.div variants={itemFadeInUp} className="relative">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsSearchOpen(!isSearchOpen)}
+                    className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300"
+                  >
+                    <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </motion.button>
+                  <AnimatePresence>
+                    {isSearchOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute right-0 top-full mt-2 w-[calc(100vw-32px)] max-w-xs sm:w-80 bg-white shadow-2xl rounded-2xl p-4 z-20">
+                        <input
+                          type="text"
+                          placeholder="Search products..."
+                          className="w-full px-3 py-2 sm:px-4 sm:py-3 bg-[#F9FAFB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6366F1] transition-all duration-300"
+                          autoFocus
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+
+                {/* Wishlist */}
+                <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300 relative">
                   <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </motion.button>
-                <AnimatePresence>
-                  {isSearchOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute right-0 top-12 w-80 bg-white shadow-2xl rounded-2xl p-4">
-                      <input
-                        type="text"
-                        placeholder="Search products..."
-                        className="w-full px-4 py-3 bg-[#F9FAFB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6366F1] transition-all duration-300"
-                        autoFocus
-                      />
-                    </motion.div>
+
+                {/* Cart */}
+                <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300 relative">
+                  <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  {cartItemsCount > 0 && (
+                    <motion.span
+                      animate={pulseAnimation}
+                      className="absolute -top-1 -right-1 h-5 w-5 bg-[#6366F1] text-white text-xs font-semibold rounded-full flex items-center justify-center">
+                      {cartItemsCount}
+                    </motion.span>
                   )}
-                </AnimatePresence>
-              </motion.div>
+                </motion.button>
 
-              {/* Wishlist */}
-              <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300 relative">
-                <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </motion.button>
-
-              {/* Cart */}
-              <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300 relative">
-                <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-                {cartItemsCount > 0 && (
-                  <motion.span
-                    animate={pulseAnimation}
-                    className="absolute -top-1 -right-1 h-5 w-5 bg-[#6366F1] text-white text-xs font-semibold rounded-full flex items-center justify-center">
-                    {cartItemsCount}
-                  </motion.span>
-                )}
-              </motion.button>
-
-              {/* User */}
-              <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300">
-                <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </motion.button>
+                {/* User */}
+                <motion.button variants={itemFadeInUp} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300">
+                  <svg className="w-5 h-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </motion.button>
+              </div>
+              {/* Mobile Menu Icon */}
+              <div className="lg:hidden">
+                <motion.button
+                  variants={itemFadeInUp}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-2 hover:bg-[#F3F4F6] rounded-full transition-all duration-300"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  aria-label="Open menu"
+                >
+                  <svg className="w-7 h-7 text-[#1F2937]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </motion.button>
+              </div>
             </motion.div>
           </div>
+          {/* Mobile Menu Dropdown */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, maxHeight: 0 }}
+                animate={{ opacity: 1, maxHeight: "500px" }}
+                exit={{ opacity: 0, maxHeight: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="lg:hidden overflow-hidden"
+              >
+                <nav className="flex flex-col py-2 space-y-1 border-t border-gray-200">
+                  {categories.map((category) => (
+                    <motion.button
+                      key={category}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setActiveCategory(category);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`block capitalize w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-300 hover:bg-gray-100 hover:text-[#6366F1] ${activeCategory === category
+                        ? 'text-[#6366F1] bg-indigo-50'
+                        : 'text-[#374151]'
+                        }`}
+                    >
+                      {category}
+                    </motion.button>
+                  ))}
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20">
+      <section className="relative min-h-screen flex items-center pt-24 md:pt-28">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1620226346750-3aea895ac33f?w=1920&q=80"
@@ -226,7 +281,7 @@ const ArobixHeroPage: NextPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-8 py-20">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
           <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div variants={fadeInUp} className="space-y-8">
@@ -237,7 +292,7 @@ const ArobixHeroPage: NextPage = () => {
               </motion.div>
 
               {/* Main Heading */}
-              <motion.h1 variants={itemFadeInUp} className="text-5xl lg:text-7xl font-bold text-[#1F2937] leading-tight">
+              <motion.h1 variants={itemFadeInUp} className="text-4xl sm:text-5xl lg:text-7xl font-bold text-[#1F2937] leading-tight">
                 Elevate Your
                 <span className="block text-[#6366F1] mt-2">Fashion Game</span>
               </motion.h1>
@@ -267,17 +322,17 @@ const ArobixHeroPage: NextPage = () => {
               </motion.div>
 
               {/* Stats */}
-              <motion.div variants={staggerContainer} className="flex space-x-8 pt-8">
-                <motion.div variants={itemFadeInUp} className="border-r border-[#E5E7EB] pr-8">
-                  <h3 className="text-3xl font-bold text-[#1F2937]">50K+</h3>
+              <motion.div variants={staggerContainer} className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left space-y-6 sm:space-y-0 sm:space-x-6 md:space-x-8 pt-8">
+                <motion.div variants={itemFadeInUp} className="sm:pr-6 md:pr-8 sm:border-r sm:border-[#E5E7EB]">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#1F2937]">50K+</h3>
                   <p className="text-sm text-[#6B7280]">Happy Customers</p>
                 </motion.div>
-                <motion.div variants={itemFadeInUp} className="border-r border-[#E5E7EB] pr-8">
-                  <h3 className="text-3xl font-bold text-[#1F2937]">1000+</h3>
+                <motion.div variants={itemFadeInUp} className="sm:px-6 md:px-8 sm:border-r sm:border-[#E5E7EB]">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#1F2937]">1000+</h3>
                   <p className="text-sm text-[#6B7280]">Premium Products</p>
                 </motion.div>
-                <motion.div variants={itemFadeInUp}>
-                  <h3 className="text-3xl font-bold text-[#1F2937]">98%</h3>
+                <motion.div variants={itemFadeInUp} className="sm:pl-6 md:pl-8">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-[#1F2937]">98%</h3>
                   <p className="text-sm text-[#6B7280]">Satisfaction Rate</p>
                 </motion.div>
               </motion.div>
@@ -349,15 +404,15 @@ const ArobixHeroPage: NextPage = () => {
 
       {/* Featured Products Section */}
       <section className="py-20 bg-[#F9FAFB]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <motion.div
             variants={fadeInUp}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: true, amount: 0.3 }}
-            className="text-center mb-16">
-            <motion.h2 variants={itemFadeInUp} className="text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
+            className="text-center mb-12 md:mb-16">
+            <motion.h2 variants={itemFadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
               Featured Products
             </motion.h2>
             <motion.p variants={itemFadeInUp} className="text-lg text-[#6B7280] max-w-2xl mx-auto">
@@ -366,7 +421,7 @@ const ArobixHeroPage: NextPage = () => {
           </motion.div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {featuredProducts.map((product, index) => (
               <div
                 key={product.id}
@@ -381,7 +436,7 @@ const ArobixHeroPage: NextPage = () => {
                   whileHover={{ y: -8, boxShadow: "0px 15px 25px rgba(0,0,0,0.1)" }}
                   className="group bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300">
                   {/* Product Image */}
-                  <div className="relative h-80 overflow-hidden bg-[#F3F4F6]">
+                  <div className="relative h-72 sm:h-80 overflow-hidden bg-[#F3F4F6]">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -495,31 +550,31 @@ const ArobixHeroPage: NextPage = () => {
           transition={{ duration: 10, repeat: Infinity, ease: "linear", delay: 3 }}
           className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></motion.div>
 
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: true, amount: 0.3 }}
             className="text-center max-w-3xl mx-auto">
-            <motion.h2 variants={itemFadeInUp} className="text-4xl lg:text-5xl font-bold text-white mb-4">
+            <motion.h2 variants={itemFadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               Get 15% Off Your First Order
             </motion.h2>
             <motion.p variants={itemFadeInUp} className="text-lg text-white/90 mb-8">
               Subscribe to our newsletter and be the first to know about new collections, exclusive deals, and fashion tips.
             </motion.p>
 
-            <motion.form variants={itemFadeInUp} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+            <motion.form variants={itemFadeInUp} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto w-full">
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 px-6 py-4 rounded-xl bg-white/20 backdrop-blur-md text-white placeholder:text-white/70 border border-white/30 focus:outline-none focus:border-white transition-all duration-300"
+                className="flex-1 px-4 py-3 sm:px-6 sm:py-4 rounded-xl bg-white/20 backdrop-blur-md text-white placeholder:text-white/70 border border-white/30 focus:outline-none focus:border-white transition-all duration-300 w-full"
               />
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0px 5px 15px rgba(255,255,255,0.3)" }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="px-8 py-4 bg-white text-[#6366F1] font-semibold rounded-xl hover:bg-white/90 transition-all duration-300"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-white text-[#6366F1] font-semibold rounded-xl hover:bg-white/90 transition-all duration-300 w-full sm:w-auto"
               >
                 Subscribe Now
               </motion.button>
@@ -534,9 +589,9 @@ const ArobixHeroPage: NextPage = () => {
 
       {/* Brand Features Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
                 icon: (
@@ -596,9 +651,9 @@ const ArobixHeroPage: NextPage = () => {
 
       {/* Testimonials Section */}
       <section className="py-20 bg-[#F9FAFB]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeInUp} initial="initial" whileInView="whileInView" viewport={{ once: true, amount: 0.3 }} className="text-center mb-16">
-            <motion.h2 variants={itemFadeInUp} className="text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
+            <motion.h2 variants={itemFadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
               What Our Customers Say
             </motion.h2>
             <motion.p variants={itemFadeInUp} className="text-lg text-[#6B7280]">
@@ -607,7 +662,7 @@ const ArobixHeroPage: NextPage = () => {
           </motion.div>
 
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
                 name: 'Sarah Johnson',
@@ -635,7 +690,7 @@ const ArobixHeroPage: NextPage = () => {
                 key={index}
                 variants={itemFadeInUp}
                 whileHover={{ y: -8, boxShadow: "0px 15px 25px rgba(0,0,0,0.1)" }}
-                className="bg-white p-8 rounded-2xl shadow-lg transition-all duration-300"
+                className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg transition-all duration-300"
               >
                 <div className="flex items-center mb-6">
                   <img
@@ -664,14 +719,14 @@ const ArobixHeroPage: NextPage = () => {
 
       {/* Instagram Feed Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeInUp}
             initial="initial"
             whileInView="whileInView"
             viewport={{ once: true, amount: 0.3 }}
-            className="text-center mb-12">
-            <motion.h2 variants={itemFadeInUp} className="text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
+            className="text-center mb-12 md:mb-16">
+            <motion.h2 variants={itemFadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1F2937] mb-4">
               Follow @arobixfashion
             </motion.h2>
             <motion.p variants={itemFadeInUp} className="text-lg text-[#6B7280]">
@@ -680,7 +735,7 @@ const ArobixHeroPage: NextPage = () => {
           </motion.div>
 
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true, amount: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
             {[
               'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80',
               'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&q=80',
@@ -723,27 +778,27 @@ const ArobixHeroPage: NextPage = () => {
           transition={{ duration: 12, repeat: Infinity, ease: "linear", delay: 4 }}
           className="absolute bottom-0 left-0 w-96 h-96 bg-[#8B5CF6]/20 rounded-full blur-3xl"></motion.div>
 
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-8">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true, amount: 0.2 }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div variants={itemFadeInUp} className="text-white space-y-6">
-              <motion.h2 variants={itemFadeInUp} className="text-4xl lg:text-5xl font-bold leading-tight">
+              <motion.h2 variants={itemFadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                 Ready to Upgrade Your Wardrobe?
               </motion.h2>
               <motion.p variants={itemFadeInUp} className="text-lg text-gray-300">
                 Join millions of fashion enthusiasts who trust Arobix for their style needs. Get exclusive access to new collections and member-only benefits.
               </motion.p>
-              <motion.div variants={itemFadeInUp} className="flex flex-wrap gap-4">
+              <motion.div variants={itemFadeInUp} className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <motion.button
                   whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(99, 102, 241, 0.5)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-[#6366F1] text-white font-semibold rounded-xl hover:bg-[#5558E3] transition-all duration-300">
+                  className="px-6 py-3 sm:px-8 sm:py-4 bg-[#6366F1] text-white font-semibold rounded-xl hover:bg-[#5558E3] transition-all duration-300 w-full sm:w-auto">
                   Start Shopping
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05, backgroundColor: "white", color: "#1F2937" }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-xl transition-all duration-300">
+                  className="px-6 py-3 sm:px-8 sm:py-4 bg-transparent border-2 border-white text-white font-semibold rounded-xl transition-all duration-300 w-full sm:w-auto">
                   Create Account
                 </motion.button>
               </motion.div>
@@ -765,8 +820,8 @@ const ArobixHeroPage: NextPage = () => {
 
       {/* Footer */}
       <motion.footer initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.5 }} viewport={{ once: true }}
-        className="bg-white pt-20 pb-8 border-t border-[#E5E7EB]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+        className="bg-white pt-12 sm:pt-16 md:pt-20 pb-8 border-t border-[#E5E7EB]">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Footer Top */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
             {/* Brand Column */}
@@ -861,9 +916,9 @@ const ArobixHeroPage: NextPage = () => {
           <div className="border-t border-[#E5E7EB] pt-8 mb-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-[#6B7280] mb-4 md:mb-0">Secure Payment Methods</p>
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-4 mt-4 md:mt-0">
                 {['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Google Pay'].map((payment) => (
-                  <div key={payment} className="px-4 py-2 bg-[#F3F4F6] rounded-lg text-[#6B7280] text-sm font-medium">
+                  <div key={payment} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#F3F4F6] rounded-lg text-[#6B7280] text-xs sm:text-sm font-medium">
                     {payment}
                   </div>
                 ))}
@@ -877,7 +932,7 @@ const ArobixHeroPage: NextPage = () => {
               <p className="text-[#6B7280] text-sm mb-4 md:mb-0">
                 © 2024 Arobix Fashion. All rights reserved.
               </p>
-              <div className="flex space-x-6">
+              <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 sm:gap-x-6 mt-4 md:mt-0">
                 <a href="#" className="text-[#6B7280] text-sm hover:text-[#6366F1] transition-colors duration-300">
                   Privacy Policy
                 </a>
