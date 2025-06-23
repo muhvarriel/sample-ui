@@ -5,35 +5,6 @@ import { motion, AnimatePresence, easeInOut, easeOut } from 'framer-motion';
 
 const PAWSILandingPage = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [, setActiveTestimonial] = useState(0);
-
-    const testimonials = [
-        {
-            text: "PAWSI benar-benar mengubah cara kami mengelola bisnis grooming. Booking online naik 300% dalam sebulan pertama!",
-            author: "Sarah Wijaya",
-            role: "Owner",
-            company: "Fluffy Friends Grooming Jakarta"
-        },
-        {
-            text: "Sistem reminder otomatis dan manajemen jadwal membuat bisnis grooming kami jalan otomatis. Staff jadi lebih fokus ke layanan.",
-            author: "Budi Santoso",
-            role: "Founder",
-            company: "Pet Paradise Surabaya"
-        },
-        {
-            text: "Akhirnya ada sistem yang dibuat khusus untuk bisnis pet care. Reminder otomatis dan proses pembayaran menghemat 10+ jam kerja per minggu.",
-            author: "Dr. Maya Putri",
-            role: "Founder",
-            company: "VetCare Plus Surabaya"
-        }
-    ];
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -230,7 +201,7 @@ const PAWSILandingPage = () => {
                                 className="inline-flex items-center px-4 py-2 bg-purple-100 rounded-full text-purple-700 text-sm font-medium"
                             >
                                 <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-                                "Bisnis grooming kami sekarang jalan otomatis."
+                                {'"Bisnis grooming kami sekarang jalan otomatis."'}
                             </motion.div>
 
                             <motion.h1
