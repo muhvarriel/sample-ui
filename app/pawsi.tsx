@@ -602,7 +602,7 @@ const PAWSILandingPage = () => {
                                     className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg mb-6"
                                 />
                                 <blockquote className="text-md lg:text-xl text-gray-800 font-medium mb-6 italic">
-                                    "{testimonial.text}"
+                                    &quot;{testimonial.text}&quot;
                                 </blockquote>
                                 <div>
                                     <div className="font-bold text-gray-900 text-lg">
@@ -721,7 +721,7 @@ const PAWSILandingPage = () => {
                     >
                         <div className="glass-card p-8 lg:p-12 max-w-4xl mx-auto">
                             <blockquote className="text-2xl lg:text-3xl font-medium text-gray-800 italic mb-6">
-                                "Setiap bisnis pet care unik, namun kebutuhannya sama: mempermudah pelanggan melakukan booking dan menyederhanakan manajemen bagi pemilik."
+                                &quot;Setiap bisnis pet care unik, namun kebutuhannya sama: mempermudah pelanggan melakukan booking dan menyederhanakan manajemen bagi pemilik.&quot;
                             </blockquote>
                             <div className="text-lg font-semibold text-purple-600">Tim Service Ops</div>
                             <div className="text-gray-500">Spesialis Teknologi Pet Care</div>
