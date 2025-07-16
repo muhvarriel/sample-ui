@@ -409,7 +409,7 @@ const LuxeLivingHeroPage: React.FC = () => {
               </motion.div>
 
               <p className="text-white/70 text-sm mt-6 font-['Inter']">
-                No credit card required • 30-day free trial • Cancel anytime
+                No credit card required • 30-day free trial • Cancel anytime.
               </p>
             </motion.div>
           </div>
@@ -513,7 +513,7 @@ const LuxeLivingHeroPage: React.FC = () => {
               >
                 <div className="flex items-center space-x-4">
                   <div className="space-y-1">
-                    <p className="text-[#64748B] text-xs font-['Inter']">Today's Outfit Score</p>
+                    <p className="text-[#64748B] text-xs font-['Inter']">Today&apos;s Outfit Score</p>
                     <p className="text-[#1A1B3A] font-['Poppins'] font-bold text-2xl">9.5/10</p>
                   </div>
                   <div className="w-16 h-16 relative">
@@ -616,7 +616,7 @@ const LuxeLivingHeroPage: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-[#F8FAFC]/80 font-['Inter'] mb-6 italic">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </p>
                 <div className="flex items-center space-x-3">
                   <img
@@ -703,7 +703,7 @@ const LuxeLivingHeroPage: React.FC = () => {
                     </motion.div>
                   </div>
                   <p className="text-[#F8FAFC]/60 font-['Inter'] mt-3">
-                    {faq.answer}
+                    {faq.answer}.
                   </p>
                 </motion.div>
               </motion.div>
@@ -740,7 +740,7 @@ const LuxeLivingHeroPage: React.FC = () => {
                 Stay in Style
               </h2>
               <p className="text-[#F8FAFC]/70 text-lg mb-8 max-w-2xl mx-auto font-['Inter']">
-                Get weekly fashion tips, AI styling insights, and exclusive updates delivered to your inbox
+                Get weekly fashion tips, AI styling insights, and exclusive updates delivered to your inbox.
               </p>
 
               <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -761,7 +761,7 @@ const LuxeLivingHeroPage: React.FC = () => {
               </form>
 
               <p className="text-[#F8FAFC]/50 text-sm mt-4 font-['Inter']">
-                No spam, unsubscribe anytime. Read our <a href="#" className="underline hover:text-[#0D50A0] transition-colors">Privacy Policy</a>
+                No spam, unsubscribe anytime. Read our <a href="#" className="underline hover:text-[#0D50A0] transition-colors">Privacy Policy</a>.
               </p>
             </div>
           </div>
@@ -818,7 +818,7 @@ const LuxeLivingHeroPage: React.FC = () => {
                 Ready to revolutionize your fashion journey?
               </h3>
               <p className="text-[#F8FAFC]/70 font-['Inter']">
-                Join thousands who've already upgraded their style game with LuxeLiving
+                Join thousands who&apos;ve already upgraded their style game with LuxeLiving
               </p>
             </div>
 
