@@ -1,7 +1,5 @@
-import PAWSILandingPage from './pawsi';
+import LuxeLivingHeroPage from './luxe_living';
 
 export default function Page() {
-    return (
-        <PAWSILandingPage/>
-    );
+    return <LuxeLivingHeroPage />;
 }
